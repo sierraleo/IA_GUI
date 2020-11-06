@@ -1,0 +1,148 @@
+import tkinter as tk
+from tkinter import ttk
+import tkinter.scrolledtext as st
+from tkinter import filedialog
+root = tk.Tk()
+root.title("Client Tracking Program")
+root.geometry("800x700")  # Width x Height
+root.configure(background='gray70')
+tabControl = ttk.Notebook(root)
+
+
+def arrayBuilder():  # building a 2D array
+    global arr, rows, cols
+    rows, cols = (10, 13)  # defining size of the array, hard coded in as of now
+    arr = [["" for i in range(cols)] for j in range(rows)]  # building the array out
+    return arr, rows, cols
+
+
+rows = 0
+cols = 0
+global arr
+
+# Creating tabs in the GUI
+tab1 = ttk.Frame(tabControl)
+tab3 = ttk.Frame(tabControl)
+tabControl.add(tab1, text='Client Information')
+tabControl.add(tab3, text='Export Data as CSV')
+tabControl.pack(expand=1, fill="both")
+
+
+def saveClient():
+    # saving the values entered into the entry boxes into a 2D array
+    name = clientName.get()
+    arr[0][0] = name
+    phoneNumber = clientPhone_Num.get()
+    arr[0][1] = phoneNumber
+    email = clientEmail.get()
+    arr[0][2] = email
+    homeAddress = clientHome_Address.get()
+    arr[0][3] = homeAddress
+    birthday = clientBirthday.get()
+    arr[0][4] = birthday
+    spouseName = clientSpouse_Name.get()
+    arr[0][5] = spouseName
+    childrenName = clientChildren_Name.get()
+    arr[0][6] = childrenName
+    petName = clientPet_Name.get()
+    arr[0][7] = petName
+    referrals = clientReferral.get()
+    arr[0][10] = referrals
+    # saving notes to the array
+    notes = clientNotes.get("1.0", tk.END)
+    fl = open("output.txt", "w")
+    fl.write(notes)
+    arr[0][12] = notes
+
+    print(arr)
+    clientInfo()
+
+
+def addClient():
+
+    tab2 = ttk.Frame(tabControl)  # creating a new tab when add client button is pressed
+    tabControl.add(tab2, text='Add Client')
+
+    global clientName, clientPhone_Num, clientEmail, clientHome_Address, clientBirthday, clientSpouse_Name, clientChildren_Name, \
+        clientPet_Name, clientReferral, clientNotes
+
+    # creating the labels and entry boxes for each data type
+    ttk.Label(tab2, text="Client Name:").grid(column=0, row=0, padx=10, pady=10)
+    clientName = ttk.Entry(tab2)
+    clientName.grid(column=1, row=0, padx=5, pady=5)
+
+    ttk.Label(tab2,text="Client Phone Number:").grid(column=0, row=1, padx=10, pady=10)
+    clientPhone_Num = ttk.Entry(tab2)
+    clientPhone_Num.grid(column=1, row=1, padx=5, pady=5)
+
+    ttk.Label(tab2,text="Client Email:").grid(column=0, row=2, padx=5, pady=5)
+    clientEmail = ttk.Entry(tab2)
+    clientEmail.grid(column=1, row=2, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Client Home Address:").grid(column=0, row=3, padx=5, pady=5)
+    clientHome_Address = ttk.Entry(tab2)
+    clientHome_Address.grid(column=1, row=3, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Client Birthday:").grid(column=0, row=4, padx=5, pady=5)
+    clientBirthday = ttk.Entry(tab2)
+    clientBirthday.grid(column=1, row=4, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Spouse Name:").grid(column=0, row=5, padx=5, pady=5)
+    clientSpouse_Name = ttk.Entry(tab2)
+    clientSpouse_Name.grid(column=1, row=5, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Child(ren) Name(s):").grid(column=0, row=6, padx=5, pady=5)
+    clientChildren_Name = ttk.Entry(tab2)  # need to separate somehow
+    clientChildren_Name.grid(column=1, row=6, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Pet Name(s):").grid(column=0, row=7, padx=5, pady=5)
+    clientPet_Name = ttk.Entry(tab2)  # need to separate somehow
+    clientPet_Name.grid(column=1, row=7, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Business Type:").grid(column=0, row=8, padx=5, pady=5)
+    entryBox = ttk.Entry(tab2)
+    entryBox.grid(column=1, row=8, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Date of Late Interaction:").grid(column=0, row=9, padx=5, pady=5)
+    entryBox = ttk.Entry(tab2)
+    entryBox.grid(column=1, row=9, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Referrals:").grid(column=0, row=10, padx=5, pady=5)
+    clientReferral = ttk.Entry(tab2)
+    clientReferral.grid(column=1, row=10, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Date of House Purchase:").grid(column=0, row=11, padx=5, pady=5)
+    entryBox = ttk.Entry(tab2)
+    entryBox.grid(column=1, row=11, padx=5, pady=5)
+
+    ttk.Label(tab2, text="Notes:").grid(column=0, row=12, padx=5, pady=5)
+    clientNotes = st.ScrolledText(tab2, width=30, height=5, font=("Times New Roman", 15))
+    clientNotes.grid(column=1, row=12, padx=5, pady=5)
+    clientNotes.focus()  # Placing cursor in the text area
+    ttk.Button(tab2, text='Save Client', command=saveClient).grid(column=0, row=13, padx=5, pady=10)
+
+
+arrayBuilder()
+ttk.Label(tab1, text="Client Information: Select a Client").grid(column=5, row=0, padx=5, pady=5)
+
+
+def clientInfo():
+    listbox = tk.Listbox(tab1, width=40, height=20)  # creating a box to display client info
+    listbox.grid(column=5, row=5, padx=5, pady=5)
+    # need to format the output
+    # need to make array editable
+    for item in [arr]:
+        listbox.insert(tk.END, item)  # inserting the client array into the listbox
+
+
+clientInfo()
+ttk.Button(tab1, text='Delete Client').grid(column=5, row=9, padx=10, pady=10)
+ttk.Button(tab1, text='Add Client', command=addClient).grid(column=5, row=8, padx=10, pady=10)
+ttk.Button(tab1, text='Save Edits').grid(column=5, row=7, padx=10, pady=10)
+
+
+# Export Client Data CSV
+ttk.Button(tab3, text='View Data to Export').grid(column=5,row=3,padx=5,pady=5)
+ttk.Button(tab3, text='Confirm Export').grid(column=5,row=5,padx=5,pady=5)
+
+root.mainloop()
