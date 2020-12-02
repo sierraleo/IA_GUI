@@ -50,8 +50,8 @@ def arrayBuilder():  # building a 2D array
     arr = [["" for i in range(cols)] for j in range(rows)]  # building the array out
     return arr, rows, cols
 
-
 csvLength()
+arrayBuilder()
 
 # global arr
 
@@ -66,6 +66,20 @@ tabControl.pack(expand=1, fill="both")
 
 global newName, newPhoneNumber, newEmail, newHomeAddress, newBirthday, newSpouseName, newChildrenName, newPetName, \
     newBusinessType, newDateInteraction, newReferrals, newHouseDate, newNotes
+
+def writeLinesToFile():
+    # Table.getData(root)
+    # testString = ("idsbibdsic", "another", "test")
+    # need another for loop with the .get to save
+    print(arr)
+    fileToSaveTo = open('clientData.csv', "w")
+    for i in range(rows):
+        for j in range(cols):
+            if j < cols - 1:
+                fileToSaveTo.write(arr[i][j] + ",")
+            else:
+                fileToSaveTo.write(arr[i][j])
+    fileToSaveTo.close()
 
 # arrayBuilder()
 def saveClient():
@@ -103,7 +117,9 @@ def saveClient():
     arr[0][12] = newNotes
     dropDownBox()
     print(arr)
-    arrayBuilder()
+    writeLinesToFile()
+    # arrayBuilder()
+
     #index_POS = arr.index("test name")
     #print(index_POS)
     #clientInfo()
@@ -284,7 +300,15 @@ def exportCSV():
     root.clientCSV = filedialog.asksaveasfilename(initialdir="read_text/", title="Select file", filetypes=(
     ("csv files", "*.csv"), ("txt files", "*.txt"), ("all files", "*.*")))
     print("saving file to " + root.clientCSV)
-    #saveEdits(root.filenamesave)
+    #print(arr)
+    fileToSaveTo = open(root.clientCSV, "w")
+    for i in range(rows):
+        for j in range(cols):
+            if j < cols - 1:
+                fileToSaveTo.write(arr[i][j] + ",")
+            else:
+                fileToSaveTo.write(arr[i][j])
+    fileToSaveTo.close()
 
 # Export Client Data CSV
 # ttk.Button(tab3, text='View Data to Export', command=viewData).grid(column=5,row=3,padx=5,pady=5)
